@@ -14,6 +14,7 @@ const pageSize = 24;
 const thumbnail = (id: string, size = "w1200") => `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=${size}`;
 const folderUrl = (id: string) => `https://drive.google.com/drive/folders/${encodeURIComponent(id)}`;
 const fileUrl = (id: string) => `https://drive.google.com/file/d/${encodeURIComponent(id)}/view`;
+const previewUrl = (id: string) => `https://drive.google.com/file/d/${encodeURIComponent(id)}/preview`;
 const directUrl = (id: string) => `https://drive.google.com/uc?export=download&id=${encodeURIComponent(id)}`;
 const formatDate = (date: number) => {
   const value = String(date).padStart(8, "0");
@@ -25,7 +26,7 @@ function MediaTile({ media, group = false }: { media: Media; group?: boolean }) 
     return (
       <figure className="media-tile audio-tile">
         <div className="audio-mark" aria-hidden="true">AUDIO / FROMM</div>
-        <audio controls preload="none" src={directUrl(media.id)} title="Fromm audio message" />
+        <iframe src={previewUrl(media.id)} title="Fromm audio message" allow="autoplay" loading="lazy" />
         <a className="media-link" href={fileUrl(media.id)} target="_blank" rel="noreferrer">OPEN IN DRIVE ↗</a>
       </figure>
     );
@@ -33,7 +34,7 @@ function MediaTile({ media, group = false }: { media: Media; group?: boolean }) 
   if (media.kind === "video") {
     return (
       <figure className="media-tile video-tile">
-        <iframe src={`${fileUrl(media.id).replace("/view", "/preview")}`} title="Fromm video" allow="autoplay; fullscreen" loading="lazy" />
+        <iframe src={previewUrl(media.id)} title="Fromm video" allow="autoplay; fullscreen" loading="lazy" />
         <a className="media-link" href={fileUrl(media.id)} target="_blank" rel="noreferrer">OPEN VIDEO ↗</a>
       </figure>
     );
@@ -103,7 +104,7 @@ export function FrommArchive({ data }: { data: Archive }) {
   return (
     <main id="top">
       <header className="masthead">
-        <div className="utility"><a className="brand" href="https://tbzarchive1206.github.io/tbzarchive/">THE BOYZ / FAN ARCHIVE</a><nav><span>FROMM MEDIA</span><span>/</span><a href="https://tbzarchive1206.github.io/tbzarchive/" target="_blank" rel="noreferrer">Main page ↗</a></nav></div>
+        <div className="utility"><a className="brand" href="https://tbzarchive1206.github.io/tbzarchive/">THE BOYZ / FAN ARCHIVE</a><nav><span>FROMM MEDIA</span><span>/</span><a href="https://x.com/tbzarchive1206_" target="_blank" rel="noreferrer">TWITTER ↗</a></nav></div>
         <h1><span className="solid">FROMM MEDIA</span><span className="outline">ARCHIVE</span></h1>
         <div className="stats"><p><strong>{data.groupGalleries.length}</strong> GALLERIES</p><i /><p><strong>{totalMedia.toLocaleString("en-US")}</strong> MEDIA FILES</p><i /><p>UPDATED <strong>{new Date(data.generatedAt).toLocaleDateString("en-GB")}</strong></p></div>
       </header>
