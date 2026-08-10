@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 type Media = { id: string; kind: "image" | "audio" | "video" | "other"; mimeType: string; date: number; year?: number; month?: number };
 type Gallery = { id: string; name: string; date: number; year: number; members: string[]; media: Media[] };
 type Member = { id: string; name: string; media: Media[] };
-type Archive = { generatedAt: string; sourceFolderId: string; groupGalleries: Gallery[]; members: Member[] };
+export type Archive = { generatedAt: string; sourceFolderId: string; groupGalleries: Gallery[]; members: Member[] };
 
 const groupMembers = ["Sangyeon", "Jacob", "Younghoon", "Hyunjae", "Juyeon", "Kevin", "Q", "Sunwoo", "Eric"];
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -164,3 +164,4 @@ export function FrommArchive({ data }: { data: Archive }) {
     </main>
   );
 }
+

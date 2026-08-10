@@ -1,28 +1,38 @@
 # FROMM MEDIA
 
-Fan-made media archive for THE BOYZ, based on the visual language and gallery behavior of the NAVER POST archive.
+Samodzielne, statyczne archiwum THE BOYZ przeznaczone do publikacji jako GitHub Pages.
 
-## What is included
+## Publikacja
 
-- Group Media Content galleries sorted by the `YYMMDD` date in their folder names.
-- Group filters for member and year.
-- Members Media entry screen, followed by a member-specific gallery.
-- Year and month filters, newest-first ordering, hidden individual filenames, inline audio players, and embedded video.
-- A generated snapshot containing the full current Google Drive index.
-- A scheduled GitHub Actions sync twice daily.
+1. Utwórz na GitHubie puste repozytorium `FROMM-MEDIA` — bez README, `.gitignore` i licencji.
+2. W lokalnym folderze projektu wykonaj:
 
-## Publish as a GitHub repository
+   ```bash
+   git remote add origin https://github.com/TWOJ_LOGIN/FROMM-MEDIA.git
+   git push -u origin main
+   ```
 
-Create an empty repository named `FROMM-MEDIA` on GitHub, then from this folder run:
+3. Na GitHubie przejdź do `Settings → Pages`.
+4. W sekcji `Build and deployment → Source` wybierz `GitHub Actions`.
+5. Otwórz kartę `Actions`, wybierz `Deploy GitHub Pages` i uruchom `Run workflow` — pierwszy push zwykle uruchamia go automatycznie.
+6. Po zakończeniu wdrożenia strona będzie dostępna pod adresem `https://TWOJ_LOGIN.github.io/FROMM-MEDIA/`.
 
-```bash
-git remote add origin https://github.com/YOUR_ACCOUNT/FROMM-MEDIA.git
-git push -u origin main
-```
+## Automatyczna synchronizacja Google Drive
 
-The repository includes a GitHub Actions validation workflow and the scheduled Drive synchronization workflow. The site source is compatible with Cloudflare Workers/Sites; connect the GitHub repository to the hosting provider of your choice after pushing.
+Repozytorium zawiera aktualny indeks Drive, więc pierwsze wdrożenie działa od razu. Aby nowe pliki były pobierane dwa razy dziennie:
 
-## Local development
+1. W Google Cloud utwórz projekt i włącz `Google Drive API`.
+2. Utwórz API key i ogranicz go wyłącznie do `Google Drive API`.
+3. Upewnij się, że główny folder Fromm Media i jego zawartość są dostępne do odczytu przez link.
+4. Na GitHubie otwórz `Settings → Secrets and variables → Actions`.
+5. Dodaj `New repository secret`:
+   - Name: `GOOGLE_DRIVE_API_KEY`
+   - Secret: wartość klucza Google Drive API.
+6. W `Actions` uruchom ręcznie workflow `Sync Fromm Media` i sprawdź, czy zakończył się zielonym znacznikiem.
+
+Workflow działa codziennie o 05:17 i 17:17 UTC. Jeśli dane się zmienią, zapisuje nowy indeks w repozytorium. Ten commit automatycznie uruchamia ponowne wdrożenie GitHub Pages.
+
+## Uruchomienie lokalne
 
 ```bash
 corepack enable
@@ -30,14 +40,9 @@ pnpm install
 pnpm run dev
 ```
 
-## Google Drive synchronization
-
-The source folder is `1FhNROp7NnH20aEduSDkI_hW_SmL3f7Ps`. Enable Google Drive API access for that shared folder and add a repository secret named `GOOGLE_DRIVE_API_KEY`. The workflow in `.github/workflows/sync-drive.yml` runs at 05:17 and 17:17 UTC every day and can also be started manually.
-
-To refresh locally:
+Kompilacja i test:
 
 ```bash
-GOOGLE_DRIVE_API_KEY=your_key pnpm run sync:drive
+pnpm run build
+node --test tests/rendered-html.test.mjs
 ```
-
-The sync rewrites `app/data/archive.generated.json`; the interface reads only that generated index and never exposes the API key to browsers.
