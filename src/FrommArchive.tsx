@@ -76,7 +76,8 @@ export function FrommArchive({ data }: { data: Archive }) {
   const memberYears = useMemo(() => member ? [...new Set(member.media.map((item) => item.year).filter(Boolean) as number[])].sort((a, b) => b - a) : [], [member]);
   const memberMonths = useMemo(() => member ? [...new Set(member.media.filter((item) => item.year === memberYear).map((item) => item.month).filter(Boolean) as number[])].sort((a, b) => b - a) : [], [member, memberYear]);
   const memberMedia = useMemo(() => member ? member.media.filter((item) => item.year === memberYear && item.month === memberMonth).sort((a, b) => b.date - a.date) : [], [member, memberMonth, memberYear]);
-  const totalMedia = data.groupGalleries.reduce((sum, gallery) => sum + gallery.media.length, 0) + data.members.reduce((sum, item) => sum + item.media.length, 0);
+  const visibleMembers = useMemo(() => data.members.filter((item) => item.name.toLocaleLowerCase() !== "new"), [data]);
+  const totalMedia = data.groupGalleries.reduce((sum, gallery) => sum + gallery.media.length, 0) + visibleMembers.reduce((sum, item) => sum + item.media.length, 0);
 
   useEffect(() => {
     document.body.classList.toggle("modal-open", Boolean(openGallery));
@@ -144,7 +145,7 @@ export function FrommArchive({ data }: { data: Archive }) {
       ) : !member ? (
         <section className="member-picker">
           <div className="picker-head"><p>SELECT A MEMBER</p><a href={folderUrl("196Xa4Nmb6hbBsIWl2jDuldH7FTmbWnzc")} target="_blank" rel="noreferrer">OPEN SOURCE FOLDER ↗</a></div>
-          <div className="member-grid">{data.members.map((item, index) => <button key={item.id} onClick={() => chooseMember(item)}><span>{String(index + 1).padStart(2, "0")}</span><strong>{item.name.toUpperCase()}</strong><small>{item.media.length.toLocaleString("en-US")} MEDIA FILES →</small></button>)}</div>
+          <div className="member-grid">{visibleMembers.map((item, index) => <button key={item.id} onClick={() => chooseMember(item)}><span>{String(index + 1).padStart(2, "0")}</span><strong>{item.name.toUpperCase()}</strong><small>{item.media.length.toLocaleString("en-US")} MEDIA FILES →</small></button>)}</div>
         </section>
       ) : (
         <section className="member-gallery">
@@ -164,4 +165,3 @@ export function FrommArchive({ data }: { data: Archive }) {
     </main>
   );
 }
-
