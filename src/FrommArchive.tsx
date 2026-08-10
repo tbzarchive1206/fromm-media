@@ -103,7 +103,7 @@ export function FrommArchive({ data }: { data: Archive }) {
   return (
     <main id="top">
       <header className="masthead">
-        <div className="utility"><a className="brand" href="https://tbzarchive1206.github.io/tbzarchive/">THE BOYZ / FAN ARCHIVE</a><nav><span>FROMM MEDIA</span><span>/</span><a href="https://x.com/tbzarchive1206_" target="_blank" rel="noreferrer">TWITTER ↗</a></nav></div>
+        <div className="utility"><a className="brand" href="https://tbzarchive1206.github.io/tbzarchive/">THE BOYZ / FAN ARCHIVE</a><nav><span>FROMM MEDIA</span><span>/</span><a href="https://tbzarchive1206.github.io/tbzarchive/" target="_blank" rel="noreferrer">Main page ↗</a></nav></div>
         <h1><span className="solid">FROMM MEDIA</span><span className="outline">ARCHIVE</span></h1>
         <div className="stats"><p><strong>{data.groupGalleries.length}</strong> GALLERIES</p><i /><p><strong>{totalMedia.toLocaleString("en-US")}</strong> MEDIA FILES</p><i /><p>UPDATED <strong>{new Date(data.generatedAt).toLocaleDateString("en-GB")}</strong></p></div>
       </header>
