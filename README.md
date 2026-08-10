@@ -11,11 +11,23 @@ Fan-made media archive for THE BOYZ, based on the visual language and gallery be
 - A generated snapshot containing the full current Google Drive index.
 - A scheduled GitHub Actions sync twice daily.
 
+## Publish as a GitHub repository
+
+Create an empty repository named `FROMM-MEDIA` on GitHub, then from this folder run:
+
+```bash
+git remote add origin https://github.com/YOUR_ACCOUNT/FROMM-MEDIA.git
+git push -u origin main
+```
+
+The repository includes a GitHub Actions validation workflow and the scheduled Drive synchronization workflow. The site source is compatible with Cloudflare Workers/Sites; connect the GitHub repository to the hosting provider of your choice after pushing.
+
 ## Local development
 
 ```bash
-npm install
-npm run dev
+corepack enable
+pnpm install
+pnpm run dev
 ```
 
 ## Google Drive synchronization
@@ -25,7 +37,7 @@ The source folder is `1FhNROp7NnH20aEduSDkI_hW_SmL3f7Ps`. Enable Google Drive AP
 To refresh locally:
 
 ```bash
-GOOGLE_DRIVE_API_KEY=your_key npm run sync:drive
+GOOGLE_DRIVE_API_KEY=your_key pnpm run sync:drive
 ```
 
 The sync rewrites `app/data/archive.generated.json`; the interface reads only that generated index and never exposes the API key to browsers.
