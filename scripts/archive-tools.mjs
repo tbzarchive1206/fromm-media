@@ -23,7 +23,6 @@ const stageNames = {
   HYUNJAE: "Hyunjae",
   JUYEON: "Juyeon",
   KEVIN: "Kevin",
-  CHANHEE: "New",
   CHANGMIN: "Q",
   SUNWOO: "Sunwoo",
   ERIC: "Eric",
@@ -85,6 +84,7 @@ export function normalizeArchive(raw) {
   for (const [key, folder] of folders) {
     if (folder.path.length !== 4 || !folder.path[1]?.startsWith("MEMBERS MEDIA")) continue;
     const rawMember = folder.path[2].replace(/^\d+\.\s*/, "").toUpperCase();
+    if (rawMember === "CHANHEE" || rawMember === "NEW") continue;
     const name = stageNames[rawMember] || rawMember;
     const year = Number(folder.path[3]);
     const month = monthNumber(folder.name);
@@ -94,7 +94,7 @@ export function normalizeArchive(raw) {
     membersMap.set(name, entry);
   }
 
-  const memberOrder = ["Sangyeon", "Jacob", "Younghoon", "Hyunjae", "Juyeon", "Kevin", "New", "Q", "Sunwoo", "Eric"];
+  const memberOrder = ["Sangyeon", "Jacob", "Younghoon", "Hyunjae", "Juyeon", "Kevin", "Q", "Sunwoo", "Eric"];
   return {
     generatedAt: raw.generatedAt,
     sourceFolderId: ROOT_FOLDER_ID,
