@@ -77,7 +77,7 @@ export function FrommArchive({ data }: { data: Archive }) {
   const memberYears = useMemo(() => member ? [...new Set(member.media.map((item) => item.year).filter(Boolean) as number[])].sort((a, b) => b - a) : [], [member]);
   const memberMonths = useMemo(() => member ? [...new Set(member.media.filter((item) => item.year === memberYear).map((item) => item.month).filter(Boolean) as number[])].sort((a, b) => b - a) : [], [member, memberYear]);
   const memberMedia = useMemo(() => member ? member.media.filter((item) => item.year === memberYear && item.month === memberMonth).sort((a, b) => b.date - a.date) : [], [member, memberMonth, memberYear]);
-  const visibleMembers = useMemo(() => data.members.filter((item) => item.name.toLocaleLowerCase() !== "new"), [data]);
+  const visibleMembers = useMemo(() => data.members, [data]);
   const totalMedia = data.groupGalleries.reduce((sum, gallery) => sum + gallery.media.length, 0) + visibleMembers.reduce((sum, item) => sum + item.media.length, 0);
 
   useEffect(() => {
