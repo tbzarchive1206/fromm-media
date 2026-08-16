@@ -104,7 +104,7 @@ export function FrommArchive({ data }: { data: Archive }) {
   return (
     <main id="top">
       <header className="masthead">
-        <div className="utility"><a className="brand" href="https://tbzarchive1206.github.io/tbzarchive/">THE BOYZ / FAN ARCHIVE</a><nav><span>FROMM MEDIA</span><span>/</span><a href="https://x.com/tbzarchive1206_" target="_blank" rel="noreferrer">TWITTER ↗</a></nav></div>
+        <div className="utility"><a className="brand" href="https://tbzarchive.com">THE BOYZ / FAN ARCHIVE</a><nav><span>FROMM MEDIA</span><span>/</span><a href="https://x.com/tbzarchive1206_" target="_blank" rel="noreferrer">TWITTER ↗</a></nav></div>
         <h1><span className="solid">FROMM MEDIA</span><span className="outline">ARCHIVE</span></h1>
         <div className="stats"><p><strong>{data.groupGalleries.length}</strong> GALLERIES</p><i /><p><strong>{totalMedia.toLocaleString("en-US")}</strong> MEDIA FILES</p><i /><p>UPDATED <strong>{new Date(data.generatedAt).toLocaleDateString("en-GB")}</strong></p></div>
       </header>
@@ -158,7 +158,7 @@ export function FrommArchive({ data }: { data: Archive }) {
         </section>
       )}
 
-      <footer><a href="https://tbzarchive1206.github.io/tbzarchive/">← MAIN ARCHIVE</a><a href="#top">BACK TO TOP ↑</a></footer>
+      <footer><a href="https://tbzarchive.com/">← MAIN ARCHIVE</a><a href="#top">BACK TO TOP ↑</a></footer>
 
       {openGallery && <div className="gallery-dialog" role="dialog" aria-modal="true" aria-labelledby="gallery-title">
         <div className="gallery-shell"><header className="gallery-head"><div><div className="gallery-kicker">GROUP MEDIA CONTENT · {openGallery.media.length} FILES</div><h2 id="gallery-title">{openGallery.name}</h2></div><div className="gallery-actions"><a href={folderUrl(openGallery.id)} target="_blank" rel="noreferrer">OPEN FOLDER ↗</a><button onClick={() => setOpenGallery(null)} aria-label="Close gallery">×</button></div></header><p className="gallery-note">SELECT AN IMAGE TO OPEN THE ORIGINAL FILE. USE “DOWNLOAD ↓” TO SAVE IT.</p><div className="photo-grid">{openGallery.media.slice(0, galleryShown).map((item) => <MediaTile key={item.id} media={item} group />)}</div>{galleryShown < openGallery.media.length && <button className="load-more gallery-more" onClick={() => setGalleryShown((value) => value + pageSize)}>LOAD MORE MEDIA ↓</button>}</div>
