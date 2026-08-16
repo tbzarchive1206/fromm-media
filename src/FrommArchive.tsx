@@ -7,7 +7,7 @@ type Gallery = { id: string; name: string; date: number; year: number; members: 
 type Member = { id: string; name: string; media: Media[] };
 export type Archive = { generatedAt: string; sourceFolderId: string; groupGalleries: Gallery[]; members: Member[] };
 
-const groupMembers = ["Sangyeon", "Jacob", "Younghoon", "Hyunjae", "Juyeon", "Kevin", "Q", "Sunwoo", "Eric"];
+const groupMembers = ["Sangyeon", "Jacob", "Younghoon", "Hyunjae", "Juyeon", "Kevin", "Q", "Sunwoo", "Eric", "Haknyeon (2017 - 2025)", "New (2017 - 2026)"];
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const pageSize = 24;
 

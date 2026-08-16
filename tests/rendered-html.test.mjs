@@ -13,6 +13,7 @@ test("builds a self-contained GitHub Pages site", async () => {
   assert.match(html, /\.\/assets\//);
   assert.match(script, /GROUP MEDIA CONTENT/);
   assert.match(script, /MEMBERS MEDIA/);
+  assert.match(script, /Haknyeon \(2017 - 2025\)/);
   assert.match(script, /New \(2017 - 2026\)/);
   assert.doesNotMatch(html, /_next|_vinext/);
 });
@@ -24,15 +25,25 @@ test("keeps New as the final member tile", async () => {
   assert.ok(lastMember.media.length > 0);
 });
 
-test("future Drive syncs keep NEW/CHANHEE visible", () => {
+test("future Drive syncs keep former members and their group filters visible", () => {
   const archive = normalizeArchive({
     generatedAt: "2026-01-01T00:00:00.000Z",
     nodes: [
       { id: "new-folder", type: "folder", name: "10. NEW", path: ["FROMM MEDIA", "MEMBERS MEDIA"] },
       { id: "new-month", type: "folder", name: "01 (1월)", path: ["FROMM MEDIA", "MEMBERS MEDIA", "10. NEW", "2026"] },
       { id: "new-photo", type: "file", name: "260101.jpg", mimeType: "image/jpeg", path: ["FROMM MEDIA", "MEMBERS MEDIA", "10. NEW", "2026", "01 (1월)"] },
+      { id: "hak-gallery", type: "folder", name: "250101 학년 촬영 비하인드", path: ["FROMM MEDIA", "GROUP CONTENT MEDIA", "2025"] },
+      { id: "new-gallery", type: "folder", name: "250102 뉴 촬영 비하인드", path: ["FROMM MEDIA", "GROUP CONTENT MEDIA", "2025"] },
     ],
   });
   assert.equal(archive.members.at(-1)?.name, "New (2017 - 2026)");
   assert.equal(archive.members.at(-1)?.media.length, 1);
+  assert.deepEqual(archive.groupGalleries.find((gallery) => gallery.id === "hak-gallery")?.members, ["Haknyeon (2017 - 2025)"]);
+  assert.deepEqual(archive.groupGalleries.find((gallery) => gallery.id === "new-gallery")?.members, ["New (2017 - 2026)"]);
+});
+
+test("current snapshot contains filterable former-member galleries", async () => {
+  const archive = JSON.parse(await readFile(new URL("../app/data/archive.generated.json", import.meta.url), "utf8"));
+  assert.ok(archive.groupGalleries.some((gallery) => gallery.members.includes("Haknyeon (2017 - 2025)")));
+  assert.ok(archive.groupGalleries.some((gallery) => gallery.members.includes("New (2017 - 2026)")));
 });
