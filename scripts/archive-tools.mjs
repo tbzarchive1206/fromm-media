@@ -28,8 +28,8 @@ const stageNames = {
   CHANGMIN: "Q",
   SUNWOO: "Sunwoo",
   ERIC: "Eric",
-  CHANHEE: "New (2017 - 2026)",
-  NEW: "New (2017 - 2026)",
+  CHANHEE: "Chanhee (2017 - 2026)",
+  NEW: "Chanhee (2017 - 2026)",
 };
 
 const folderKey = (parts) => parts.join("\u001f");
@@ -87,7 +87,7 @@ export function normalizeArchive(raw) {
   const membersMap = new Map();
   for (const [key, folder] of folders) {
     if (folder.path.length !== 4 || !folder.path[1]?.startsWith("MEMBERS MEDIA")) continue;
-    const rawMember = folder.path[2].replace(/^\d+\.\s*/, "").toUpperCase();
+    const rawMember = folder.path[2].replace(/^\d+\.\s*/, "").replace(/\s*\(\d{4}\s*-\s*\d{4}\)\s*$/u, "").trim().toUpperCase();
     const name = stageNames[rawMember] || rawMember;
     const year = Number(folder.path[3]);
     const month = monthNumber(folder.name);
@@ -97,12 +97,12 @@ export function normalizeArchive(raw) {
     membersMap.set(name, entry);
   }
 
-  const memberOrder = ["Sangyeon", "Jacob", "Younghoon", "Hyunjae", "Juyeon", "Kevin", "Q", "Sunwoo", "Eric", "New (2017 - 2026)"];
+  const memberOrder = ["Sangyeon", "Jacob", "Younghoon", "Hyunjae", "Juyeon", "Kevin", "Q", "Sunwoo", "Eric", "Chanhee (2017 - 2026)"];
   return {
     generatedAt: raw.generatedAt,
     sourceFolderId: ROOT_FOLDER_ID,
     groupGalleries: groupGalleries.sort((a, b) => b.date - a.date),
-    members: [...membersMap.values()].sort((a, b) => memberOrder.indexOf(a.name) - memberOrder.indexOf(b.name)),
+    members: [...membersMap.values()].sort((a, b) => (memberOrder.includes(a.name) ? memberOrder.indexOf(a.name) : memberOrder.length) - (memberOrder.includes(b.name) ? memberOrder.indexOf(b.name) : memberOrder.length)),
   };
 }
 
