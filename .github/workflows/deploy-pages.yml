@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  workflow_run:
+    workflows: [Sync Fromm Media]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: read
@@ -16,9 +20,13 @@ concurrency:
 
 jobs:
   build:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Fetch main including the commit created by the completed sync.
+          ref: main
       - uses: pnpm/action-setup@v4
         with:
           version: 11.16.0
