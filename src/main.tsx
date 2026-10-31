@@ -10,3 +10,5 @@ createRoot(document.getElementById("root")!).render(
     <FrommArchive data={archiveData as Archive} />
   </StrictMode>,
 );
+
+import "./member-responsive.css";

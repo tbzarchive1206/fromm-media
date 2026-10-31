@@ -1,4 +1,5 @@
 "use client";
+import { MemberName } from "./MemberName";
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -146,11 +147,11 @@ export function FrommArchive({ data }: { data: Archive }) {
       ) : !member ? (
         <section className="member-picker">
           <div className="picker-head"><p>SELECT A MEMBER</p><a href={folderUrl("196Xa4Nmb6hbBsIWl2jDuldH7FTmbWnzc")} target="_blank" rel="noreferrer">OPEN SOURCE FOLDER ↗</a></div>
-          <div className="member-grid">{visibleMembers.map((item, index) => <button key={item.id} onClick={() => chooseMember(item)}><span>{String(index + 1).padStart(2, "0")}</span><strong>{item.name.toUpperCase()}</strong><small>{item.media.length.toLocaleString("en-US")} MEDIA FILES →</small></button>)}</div>
+          <div className="member-grid">{visibleMembers.map((item, index) => <button key={item.id} onClick={() => chooseMember(item)}><span>{String(index + 1).padStart(2, "0")}</span><strong><MemberName name={item.name.replace(/^chanhee/i, "New")} /></strong><small>{item.media.length.toLocaleString("en-US")} MEDIA FILES →</small></button>)}</div>
         </section>
       ) : (
         <section className="member-gallery">
-          <header className="member-gallery-head"><button onClick={() => setMember(null)}>← ALL MEMBERS</button><div><span>MEMBERS MEDIA</span><h2>{member.name.toUpperCase()}</h2></div><a href={folderUrl(member.id)} target="_blank" rel="noreferrer">OPEN FOLDER ↗</a></header>
+          <header className="member-gallery-head"><button onClick={() => setMember(null)}>← ALL MEMBERS</button><div><span>MEMBERS MEDIA</span><h2>{member.name.replace(/^chanhee/i, "New").toUpperCase()}</h2></div><a href={folderUrl(member.id)} target="_blank" rel="noreferrer">OPEN FOLDER ↗</a></header>
           <div className="member-filters"><label>YEAR<select value={memberYear} onChange={(event) => { setMemberYear(Number(event.target.value)); setMemberShown(pageSize); }} aria-label="Filter member media by year">{memberYears.map((year) => <option key={year}>{year}</option>)}</select></label><label>MONTH<select value={memberMonth} onChange={(event) => { setMemberMonth(Number(event.target.value)); setMemberShown(pageSize); }} aria-label="Filter member media by month">{monthNames.map((name, index) => <option value={index + 1} key={name}>{String(index + 1).padStart(2, "0")} / {name.toUpperCase()}</option>)}</select></label><p>{memberMonths.includes(memberMonth) ? `${memberMedia.length} MEDIA FILES` : "NO UPLOADS"}</p></div>
           <div className="member-period"><p>{monthNames[memberMonth - 1]} / {memberYear}</p><span>NEWEST MEDIA FIRST</span></div>
           {memberMedia.length ? <div className="media-grid">{memberMedia.slice(0, memberShown).map((item) => <MediaTile key={item.id} media={item} />)}</div> : <div className="empty member-empty"><strong>NO MEDIA</strong>THERE ARE NO UPLOADS FOR THIS MONTH.</div>}
